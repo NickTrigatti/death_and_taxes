@@ -1,0 +1,17 @@
+taxes:
+  - 
+    start_date: 2011-01-01
+    end_date: 2012-01-01
+    percentage: 5.0
+    name: gst
+states:
+  qc:
+    - 
+      start_date: 2011-01-01
+      end_date: 2012-01-01
+      percentage: 8.5
+      name: pst
+      rule:
+        country: ['gst']
+        state:
+          compound: ['gst', 'pst']
