@@ -12,9 +12,7 @@ Gem::Specification.new do |gem|
   gem.homepage = ''
   
   gem.add_runtime_dependency 'rails'
-  gem.add_runtime_dependency 'yaml'
   gem.add_development_dependency 'sqlite3'
-  gem.add_development_dependency 'mysql2', '< 0.3'
   
   gem.executables   = []
   gem.files         = `git ls-files`.split("\n")
