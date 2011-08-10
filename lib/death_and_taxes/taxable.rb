@@ -26,9 +26,10 @@ module DeathAndTaxes
     
     module InstanceMethods
       def apply_taxes(taxes)
-        taxes.each do |tax|
-          
-          tax.apply(amount)
+        taxes = [taxes] unless taxes.is_a? Array
+        
+        self.taxations = taxes.collect do |tax|
+          Taxation.new :amount => tax.apply(amount), :percentage => tax.multiplier, :name => tax.name, :account_number => tax.account_number
         end
       end
     end

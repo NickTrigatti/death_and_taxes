@@ -5,6 +5,7 @@ class DeathAndTaxesMigration < ActiveRecord::Migration
       t.integer :amount
       t.float :percentage
       t.string :name
+      t.string :account_number
       
       t.timestamps
     end
