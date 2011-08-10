@@ -1,3 +1,5 @@
-class DeathAndTaxes::Taxation
-  belongs_to :taxable, :polymorphic => true
+module DeathAndTaxes
+  class Taxation < ActiveRecord::Base
+    belongs_to :taxable, :polymorphic => true
+  end
 end
