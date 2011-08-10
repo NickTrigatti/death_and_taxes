@@ -5,7 +5,7 @@ module DeathAndTaxes
     end
     
     
-    module ClassMehtods
+    module ClassMethods
       
       ##
       # Makes this model taxable
@@ -14,9 +14,21 @@ module DeathAndTaxes
       #   class Invoicing < ActiveRecord::Base
       #     acts_as_taxable
       #   end
-      def acts_as_taxable(*args)    
+      def acts_as_taxable(*args)
+        
         class_eval do
-          has_many :taxations, :polymorphic => true, :class_name => 'DeathAndTaxes::Taxation'
+          has_many :taxations, :as => :taxable, :class_name => 'DeathAndTaxes::Taxation'
+        end
+        
+        include DeathAndTaxes::Taxable::InstanceMethods
+      end
+    end
+    
+    module InstanceMethods
+      def apply_taxes(taxes)
+        taxes.each do |tax|
+          
+          tax.apply(amount)
         end
       end
     end
