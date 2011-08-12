@@ -3,11 +3,21 @@ require 'active_record/version'
 
 require 'active_support/core_ext'
 
-
-require File.join(File.dirname(__FILE__), 'death_and_taxes/railtie')
+require File.join(File.dirname(__FILE__), 'death_and_taxes', 'railtie')
 
 module DeathAndTaxes
-  %w( Tax Taxable Taxation Taxer ).each do |class_name|
-    autoload class_name.to_sym, File.join(File.dirname(__FILE__), "death_and_taxes/#{class_name.downcase}")
+  %w( Country State Tax Taxable Taxation Taxer TaxList TaxVersion ).each do |class_name|
+    autoload class_name.to_sym, File.join(File.dirname(__FILE__), "death_and_taxes/#{class_name.underscore}")
+  end
+  
+  Dir[File.join(File.dirname(__FILE__), '..', 'config', '*.yml')].each do |filename|
+    country_code = filename.match(/\W(?<country_code>[a-z]+)\.yml/)[:country_code]
+    @countries = {}
+    @countries[country_code] = Country.new( YAML::load_file filename )
+  end
+  
+  def self.applicable_taxes from, to, date = nil
+    date ||= Date.today
+    @countries.detect{|country| country.applies_taxes?(from, to, date)}
   end
 end
