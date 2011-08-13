@@ -9,8 +9,8 @@ module DeathAndTaxes
     end
     
     def parse yml
-      yml['taxes'].each do |tax_name, versions|
-        @taxes[tax_name] = VersionTax.new(versions)
+      yml['taxes'].each do |tax_name, infos|
+        @taxes[tax_name] = TaxInfo.new(tax_name, infos)
       end
       
       yml['states'].each do |state_code, state_yml|
@@ -18,10 +18,20 @@ module DeathAndTaxes
       end
     end
     
-    def applies_taxes? from_state, to_state, date
-      return false unless @states[from_state] && @states[to_state]
-      
-      @states[from_state].applies_taxes? to_state, date
+    def applicable_taxes from, to, date      
+      if from[:country] == to[:country] && to[:country] == @code
+        @states[from[:state]].applicable_taxes? to[:state], date
+      else
+        []
+      end
+    end
+    
+    def applies_taxes? from, to, date
+      applicable_taxes(from, to, date).any?
+    end
+    
+    def build_tax tax, date
+      @taxes[tax].try(:build, date) || @states.detect{|s| s.build_tax(t, date)}
     end
   end
 end
