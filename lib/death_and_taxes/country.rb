@@ -1,9 +1,9 @@
 module DeathAndTaxes
   class Country
-    @taxes = {}
-    @states = {}
     
     def initialize code, yml = nil
+      @taxes = {}
+      @states = {}
       @code = code
       parse yml if yml
     end
@@ -18,9 +18,9 @@ module DeathAndTaxes
       end
     end
     
-    def applicable_taxes from, to, date      
+    def applicable_taxes from, to, date
       if from[:country] == to[:country] && to[:country] == @code
-        @states[from[:state]].applicable_taxes? to[:state], date
+        @states[from[:state]].applicable_taxes to[:state], date
       else
         []
       end
@@ -31,7 +31,7 @@ module DeathAndTaxes
     end
     
     def build_tax tax, date
-      @taxes[tax].try(:build, date) || @states.detect{|s| s.build_tax(t, date)}
+      @taxes[tax].try(:build, date) || @states.map{|t, s| s.build_tax(tax, date)}
     end
   end
 end

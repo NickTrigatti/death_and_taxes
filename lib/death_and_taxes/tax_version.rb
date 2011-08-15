@@ -1,8 +1,9 @@
 module DeathAndTaxes
   class TaxVersion
     def initialize yml
-      @start = Date.new(yml['start'])
-      @end = Date.new(yml['end'])
+      @start = yml['start']
+      @end = yml['end']
+      @percentage = yml['percentage']
     end
     
     def cover? date

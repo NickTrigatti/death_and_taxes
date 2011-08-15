@@ -2,7 +2,7 @@ module DeathAndTaxes
   class TaxInfo
     def initialize name, yml = nil
       @name = name
-      parse yml unless yml
+      parse yml if yml
     end
     
     def parse yml

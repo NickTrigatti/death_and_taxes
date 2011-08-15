@@ -1,8 +1,8 @@
 module DeathAndTaxes
   class State
-    @taxes = {}
     
     def initialize code, yml = nil
+      @taxes = {}
       @code = code
       parse yml if yml
     end
@@ -14,7 +14,7 @@ module DeathAndTaxes
         @taxes[tax_name] = TaxInfo.new(tax_name, infos)
       end
       
-      @rule = yml['rules']
+      @rules = yml['rules']
     end
     
     def applicable_taxes to_state, date
@@ -25,7 +25,7 @@ module DeathAndTaxes
       else
         []
       end
-      [taxes].flatten.select{|t| t.cover?(date)}
+      [taxes].flatten
     end
     
     def build_tax tax, date
