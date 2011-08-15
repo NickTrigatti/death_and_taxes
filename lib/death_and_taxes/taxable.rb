@@ -22,6 +22,11 @@ module DeathAndTaxes
         
         include DeathAndTaxes::Taxable::InstanceMethods
       end
+      
+      def calculate_rate taxes
+        taxes.reduce(1) { |rate, tax| rate + tax.apply(1) }
+      end
+      
     end
     
     module InstanceMethods
@@ -29,7 +34,7 @@ module DeathAndTaxes
         taxes = [taxes] unless taxes.is_a? Array
         
         self.taxations = taxes.collect do |tax|
-          Taxation.new :amount => tax.apply(amount), :percentage => tax.multiplier, :name => tax.name, :account_number => tax.account_number
+          Taxation.new :amount => tax.apply(amount), :percentage => tax.percentage, :name => tax.name, :account_number => tax.account_number
         end
       end
     end
