@@ -13,13 +13,13 @@ module DeathAndTaxes
     end
     
     def cover? date
-      @versions.any?{ |version| v.cover? date }
+      @versions.any?{ |v| v.cover? date }
     end
     
     def build date
-      if v = @versions.detect{ |v| v.cover?(date) }
-        t = Tax.new :name => @name, :percentage => v['percentage']
-        t.tax = DeathAndTaxes.build_tax(@apply_on, date) if @apply_on
+      if v = @versions.detect{ |version| version.cover?(date) }
+        t = Tax.new :name => @name, :percentage => v.percentage
+        t.tax = DeathAndTaxes.build(@apply_on, date) if @apply_on
         t
       end
     end

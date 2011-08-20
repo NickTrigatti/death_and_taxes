@@ -31,7 +31,7 @@ module DeathAndTaxes
     end
     
     def build_tax tax, date
-      @taxes[tax].try(:build, date) || @states.map{|t, s| s.build_tax(tax, date)}
+      @taxes[tax].try(:build, date) || @states.detect{|t, s| s.try(:build_tax, tax, date)}.try(:last).try(:build_tax, tax, date)
     end
   end
 end

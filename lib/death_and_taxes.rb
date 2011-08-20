@@ -22,6 +22,6 @@ module DeathAndTaxes
   end
   
   def self.build tax, date
-    @countries.detect {|code, country| country.build_tax(tax, date)}
+    @countries.detect {|code, country| country.build_tax(tax, date)}.try(:last).try(:build_tax, tax, date)
   end
 end

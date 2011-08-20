@@ -22,7 +22,7 @@ states:
             ends: 2012-12-31
             percentage: 9.5
   
-  on:
+  "on":
     rules:
       same_country: HST
     taxes:

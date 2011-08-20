@@ -1,17 +1,14 @@
 module DeathAndTaxes
   class TaxVersion
+    attr_reader :starts, :ends, :percentage
     def initialize yml
-      @start = yml['start']
-      @end = yml['end']
+      @starts = yml['starts']
+      @ends = yml['ends']
       @percentage = yml['percentage']
     end
     
     def cover? date
-      (@start..@end).cover? date
-    end
-    
-    def build
-      
+      (@starts..@ends).cover? date
     end
   end
 end
