@@ -8,23 +8,27 @@ taxes:
 states:
   qc:
     rules:
-      same_state: [GST, QST]
-      same_country: GST
+      - starts: 0001-01-01
+        ends: 2020-12-31
+        same_state: [GST, QST]
+        same_country: GST
     taxes:
       QST:
-        apply_on: GST
         versions:
           - starts: 2011-01-01
             ends: 2011-12-31
             percentage: 8.5
-        
-          - starts: 2012-01-01
+            apply_on: GST
+            
+          - starts: 2012-01-011
             ends: 2012-12-31
             percentage: 9.5
   
   "on":
     rules:
-      same_country: HST
+      - starts: 0001-01-01
+        ends: 2020-12-31
+        same_country: HST
     taxes:
       HST:
         versions:

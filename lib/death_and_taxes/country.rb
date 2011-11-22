@@ -18,9 +18,9 @@ module DeathAndTaxes
       end
     end
     
-    def applicable_taxes from, to, date
-      if from[:country] == to[:country] && to[:country] == @code
-        @states[from[:state]].applicable_taxes to[:state], date
+    def applicable_taxes seller, buyer, date
+      if seller[:country] == buyer[:country] && seller[:country] == @code
+        @states[seller[:state]].applicable_taxes buyer[:state], date
       else
         []
       end

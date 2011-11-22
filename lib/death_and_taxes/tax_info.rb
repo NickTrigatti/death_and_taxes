@@ -6,7 +6,6 @@ module DeathAndTaxes
     end
     
     def parse yml
-      @apply_on = yml['apply_on']
       @versions = yml['versions'].collect do |version|
         TaxVersion.new(version)
       end
@@ -19,7 +18,7 @@ module DeathAndTaxes
     def build date
       if v = @versions.detect{ |version| version.cover?(date) }
         t = Tax.new :name => @name, :percentage => v.percentage
-        t.tax = DeathAndTaxes.build(@apply_on, date) if @apply_on
+        t.tax = DeathAndTaxes.build(v.apply_on, date) if v.apply_on
         t
       end
     end
