@@ -7,12 +7,16 @@ rescue Bundler::BundlerError => e
   $stderr.puts "Run `bundle install` to install missing gems"
   exit e.status_code
 end
-require 'test/unit'
-require 'shoulda'
+require 'rspec'
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'death_and_taxes'
 
-class Test::Unit::TestCase
+
+def applicable_taxes from, to, date = nil
+  defaults = {:country => "ca", :state => "qc"}
+  from = defaults.merge from
+  to = defaults.merge to
+  DeathAndTaxes.applicable_taxes from, to, date
 end

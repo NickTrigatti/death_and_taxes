@@ -13,6 +13,7 @@ Gem::Specification.new do |gem|
   
   gem.add_runtime_dependency 'rails'
   gem.add_development_dependency 'sqlite3'
+  gem.add_development_dependency 'rspec'
   
   gem.executables   = []
   gem.files         = `git ls-files`.split("\n")
