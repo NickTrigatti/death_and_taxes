@@ -34,7 +34,7 @@ module DeathAndTaxes
         taxes = [taxes] unless taxes.is_a? Array
         
         self.taxations = taxes.collect do |tax|
-          Taxation.new :amount => tax.apply(amount), :percentage => tax.percentage, :name => tax.name, :account_number => tax.account_number
+          Taxation.new :amount => tax.apply(amount).round, :percentage => tax.percentage, :name => tax.name, :account_number => tax.account_number
         end
       end
     end
