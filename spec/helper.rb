@@ -1,5 +1,10 @@
 require 'rubygems'
 require 'bundler'
+require 'active_record'
+require 'active_support'
+require 'rake'
+require 'sqlite3'
+
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -9,10 +14,25 @@ rescue Bundler::BundlerError => e
 end
 require 'rspec'
 
+
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'death_and_taxes'
+require 'generators/death_and_taxes/migration/templates/active_record/migration'
 
+db_file = File.join(File.dirname(__FILE__), "death_and_taxes.sqlite3")
+
+File.delete db_file if File.exists? db_file
+
+ActiveRecord::Base.establish_connection(
+  :adapter => "sqlite3",
+  :database => db_file
+)
+
+RSpec.configure do |config|
+end
+
+DeathAndTaxesMigration.up
 
 def applicable_taxes from, to, date = nil
   defaults = {:country => "ca", :state => "qc"}
