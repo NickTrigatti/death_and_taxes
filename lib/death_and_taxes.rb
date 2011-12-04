@@ -3,11 +3,10 @@ require 'active_record/version'
 
 require 'active_support/core_ext'
 
-require File.join(File.dirname(__FILE__), 'death_and_taxes', 'railtie')
 
 module DeathAndTaxes
   %w( Country State Tax Taxable Taxation Taxer TaxInfo TaxVersion ).each do |class_name|
-    autoload class_name.to_sym, File.join(File.dirname(__FILE__), "death_and_taxes/#{class_name.underscore}")
+    require File.join(File.dirname(__FILE__), "death_and_taxes/#{class_name.underscore}")
   end
   
   Dir[File.join(File.dirname(__FILE__), '..', 'config', '*.yml')].each do |filename|
@@ -25,3 +24,6 @@ module DeathAndTaxes
     @countries.detect {|code, country| country.build_tax(tax, date)}.try(:last).try(:build_tax, tax, date)
   end
 end
+
+ActiveRecord::Base.send(:include, DeathAndTaxes::Taxable)
+ActiveRecord::Base.send(:include, DeathAndTaxes::Taxer)
