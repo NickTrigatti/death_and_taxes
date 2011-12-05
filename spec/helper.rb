@@ -5,6 +5,7 @@ require 'active_support'
 require 'rake'
 require 'sqlite3'
 
+
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -29,10 +30,21 @@ ActiveRecord::Base.establish_connection(
   :database => db_file
 )
 
+
 RSpec.configure do |config|
 end
 
+ActiveRecord::Base.connection.execute("DROP TABLE IF EXISTS 'products'")
+ActiveRecord::Base.connection.create_table(:products) do |t|
+  t.string :name
+  t.integer :amount
+end
+
 DeathAndTaxesMigration.up
+
+class Product < ActiveRecord::Base
+  acts_as_taxable
+end
 
 def applicable_taxes from, to, date = nil
   defaults = {:country => "ca", :state => "qc"}

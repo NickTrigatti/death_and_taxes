@@ -62,4 +62,38 @@ describe 'DeathAndTaxes' do
     end
   end
   
+  describe 'applicable_taxes' do
+    it 'should get the correct taxes to apply' do
+      taxes = DeathAndTaxes.applicable_taxes({:country => "ca", :state => "qc"}, {:country => "ca", :state => "qc"}, Date.new(2011, 1, 1))
+      taxes.should == ["GST", "QST"]
+    end
+  end
+  
+  describe 'building taxes' do
+    it 'should build the correct taxes' do
+      tax = DeathAndTaxes.build  "GST", Date.new(2011, 1, 1)
+      tax.name.should == "GST"
+      tax.percentage.should == 5
+      
+      tax = DeathAndTaxes.build  "QST", Date.new(2011, 1, 1)
+      tax.name.should == "QST"
+      tax.percentage.should == 8.5
+    end
+  end
+  
+  describe 'applying taxes' do
+    it 'should create the correct taxations' do
+      product = Product.create(:amount => 100_000)
+      taxes = ["GST", "QST"].map{|name| DeathAndTaxes.build name, Date.new(2011, 1, 1)}
+      product.apply_taxes taxes
+      taxations = product.taxations
+      
+      taxations.first.name.should == "GST"
+      taxations.first.amount.should == 5000
+      
+      taxations.last.name.should == "QST"
+      taxations.last.amount.should == 8925
+    end
+  end
+  
 end
