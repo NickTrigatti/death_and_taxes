@@ -1,6 +1,51 @@
-= death_and_taxes
+Death And Taxes
+===============
 
-Description goes here.
+Death And Taxes is a gem for ActiveRecord that makes it easier to handle Tax handling.
+
+
+Tax
+---
+
+The tax model should have a name and a percentage. You configure them in the config/#{country}.yml file if you wish to use the _DeathAndTaxes::applicable\_taxes_ method.
+
+Taxes can be applied on another tax (like in Quebec before 2012) by having a tax itself.
+
+You can obtain the effective rate of a tax (after being compounded) by using
+
+    tax.multiplier
+
+Taxable
+-------
+
+You can make ActiveRecord models taxable. The taxable models must respond to 'amount'
+
+
+    class Product < ActiveRecord::Base
+      acts_as_taxable
+    end
+
+
+Taxable models have a method apply_taxes which applies the correct taxes as taxations.
+
+    product = Product.create :name => "Toto", :amount => 100
+    product.apply_taxes [DeathAndTaxes::Tax.new(:name => "GST", :percentage => 7)]
+    product.taxations
+    #=> [#<DeathAndTaxes::Taxation amount: 7, percentage: 7.0, name: "GST" ...>]
+
+
+Taxer
+-----
+
+Taxer model can have taxes associated. 
+    
+    class Organization < ActiveRecord::Base
+      acts_as_taxer
+    end
+    
+    organization.taxes << DeathAndTaxes::Tax.new(:name => "GST", :percentage => 7)
+
+
 
 == Contributing to death_and_taxes
  
