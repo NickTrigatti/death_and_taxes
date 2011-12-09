@@ -27,7 +27,7 @@ Tax
 
 The tax model should have a name and a percentage. You configure them in the config/#{country}.yml file if you wish to use the _DeathAndTaxes::applicable\_taxes_ method.
 
-Taxes can be applied on another tax (like in Quebec before 2012) by having a tax itself.
+Taxes can be applied on another tax (like in Quebec) by having a tax itself.
 
 You can obtain the effective rate of a tax (after being compounded) by using
 
