@@ -23,6 +23,7 @@ states:
           - starts: 2012-01-01
             ends: 2012-12-31
             percentage: 9.5
+            apply_on: GST
   
   "on":
     rules:
